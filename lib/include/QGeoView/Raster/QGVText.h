@@ -20,7 +20,7 @@
 
 #include <QGeoView/QGVDrawItem.h>
 
-class QGVText : public QGVDrawItem
+class QGV_LIB_DECL QGVText : public QGVDrawItem
 {
     Q_OBJECT
 public:

@@ -34,7 +34,9 @@
 #include <QGeoView/QGVWidgetZoom.h>
 #include <QGeoView/Raster/QGVIcon.h>
 #include <QGeoView/Raster/QGVImage.h>
+#include <QGeoView/Raster/QGVLine.h>
 #include <QGeoView/Raster/QGVPoint.h>
+#include <QGeoView/Raster/QGVText.h>
 
 MainWindow::MainWindow()
 {
@@ -107,6 +109,18 @@ QGroupBox* MainWindow::createOptionsList()
         QPushButton* button = new QPushButton("Add point");
         groupBox->layout()->addWidget(button);
         connect(button, &QPushButton::clicked, this, &MainWindow::addPoint);
+    }
+
+    {
+        QPushButton* button = new QPushButton("Add line");
+        groupBox->layout()->addWidget(button);
+        connect(button, &QPushButton::clicked, this, &MainWindow::addLine);
+    }
+
+    {
+        QPushButton* button = new QPushButton("Add text");
+        groupBox->layout()->addWidget(button);
+        connect(button, &QPushButton::clicked, this, &MainWindow::addText);
     }
 
     {
@@ -195,6 +209,31 @@ void MainWindow::addPoint()
 
     auto* item = new QGVPoint();
     item->setGeometry(Helpers::randPos(itemTargetArea));
+
+    mLayer->addItem(item);
+
+    updateListOfItems();
+}
+
+void MainWindow::addLine()
+{
+    const QGV::GeoRect itemTargetArea = mMap->getProjection()->projToGeo(mMap->getCamera().projRect());
+
+    auto* item = new QGVLine();
+    item->setGeometry(Helpers::randPos(itemTargetArea), Helpers::randPos(itemTargetArea));
+
+    mLayer->addItem(item);
+
+    updateListOfItems();
+}
+
+void MainWindow::addText()
+{
+    const QGV::GeoRect itemTargetArea = mMap->getProjection()->projToGeo(mMap->getCamera().projRect());
+
+    auto* item = new QGVText();
+    item->setGeometry(Helpers::randPos(itemTargetArea));
+    item->setText("HelloWorld!");
 
     mLayer->addItem(item);
 

@@ -44,6 +44,8 @@ public:
     void addImage();
     void addIcon();
     void addPoint();
+    void addText();
+    void addLine();
     void removeLast();
     void updateListOfItems();
 
