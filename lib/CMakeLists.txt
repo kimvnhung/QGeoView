@@ -50,6 +50,8 @@ add_library(qgeoview SHARED
     include/QGeoView/Raster/QGVImage.h
     include/QGeoView/Raster/QGVIcon.h
     include/QGeoView/Raster/QGVPoint.h
+    include/QGeoView/Raster/QGVLine.h
+    include/QGeoView/Raster/QGVText.h
     src/QGVUtils.cpp
     src/QGVGlobal.cpp
     src/QGVProjection.cpp
@@ -76,6 +78,8 @@ add_library(qgeoview SHARED
     src/Raster/QGVImage.cpp
     src/Raster/QGVIcon.cpp
     src/Raster/QGVPoint.cpp
+    src/Raster/QGVLine.cpp
+    src/Raster/QGVText.cpp
 )
 
 target_include_directories(qgeoview
