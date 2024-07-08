@@ -34,6 +34,7 @@
 #include <QGeoView/QGVWidgetZoom.h>
 #include <QGeoView/Raster/QGVIcon.h>
 #include <QGeoView/Raster/QGVImage.h>
+#include <QGeoView/Raster/QGVPoint.h>
 
 MainWindow::MainWindow()
 {
@@ -100,6 +101,12 @@ QGroupBox* MainWindow::createOptionsList()
         groupBox->layout()->addWidget(button);
 
         connect(button, &QPushButton::clicked, this, &MainWindow::addIcon);
+    }
+
+    {
+        QPushButton* button = new QPushButton("Add point");
+        groupBox->layout()->addWidget(button);
+        connect(button, &QPushButton::clicked, this, &MainWindow::addPoint);
     }
 
     {
@@ -176,6 +183,18 @@ void MainWindow::addIcon()
     auto* item = new QGVIcon();
     item->setGeometry(Helpers::randPos(itemTargetArea));
     item->loadImage(mIcon);
+
+    mLayer->addItem(item);
+
+    updateListOfItems();
+}
+
+void MainWindow::addPoint()
+{
+    const QGV::GeoRect itemTargetArea = mMap->getProjection()->projToGeo(mMap->getCamera().projRect());
+
+    auto* item = new QGVPoint();
+    item->setGeometry(Helpers::randPos(itemTargetArea));
 
     mLayer->addItem(item);
 

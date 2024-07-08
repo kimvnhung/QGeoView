@@ -43,6 +43,7 @@ public:
 
     void addImage();
     void addIcon();
+    void addPoint();
     void removeLast();
     void updateListOfItems();
 
@@ -53,4 +54,5 @@ private:
 
     QImage mImage;
     QImage mIcon;
+    QImage mPoint;
 };
