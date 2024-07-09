@@ -233,7 +233,7 @@ void MainWindow::addText()
 
     auto* item = new QGVText();
     item->setGeometry(Helpers::randPos(itemTargetArea));
-    item->setText("HelloWorld!");
+    item->setText("Chemnitz");
 
     mLayer->addItem(item);
 

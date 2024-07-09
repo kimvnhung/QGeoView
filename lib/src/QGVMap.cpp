@@ -25,6 +25,8 @@
 
 #include <QMouseEvent>
 #include <QVBoxLayout>
+#include <QFontDatabase>
+#include <QDir>
 
 class RootItem : public QGVItem
 {
@@ -48,6 +50,18 @@ RootItem::~RootItem() = default;
 QGVMap::QGVMap(QWidget* parent)
     : QWidget(parent)
 {
+    Q_INIT_RESOURCE(font);
+    // Add all fonts in qrc:/fonts folder to font database
+    // Loop in fonts folder
+    const auto fontDir = QStringLiteral(":/fonts/");
+    const auto fontDirInfo = QDir(fontDir);
+    const auto fontDirFiles = fontDirInfo.entryInfoList(QDir::Files);
+    for (const auto& fontDirFile : fontDirFiles) {
+        const auto fontPath = fontDir + fontDirFile.fileName();
+        QFontDatabase::addApplicationFont(fontPath);
+    }
+
+
     mProjection.reset(new QGVProjectionEPSG3857());
     mQGView.reset(new QGVMapQGView(this));
     mRootItem.reset(new RootItem(this));

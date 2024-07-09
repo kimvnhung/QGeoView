@@ -1,0 +1,23 @@
+<RCC>
+    <qresource prefix="/">
+        <file>fonts/NotoSans-Black.ttf</file>
+        <file>fonts/NotoSans-BlackItalic.ttf</file>
+        <file>fonts/NotoSans-Bold.ttf</file>
+        <file>fonts/NotoSans-BoldItalic.ttf</file>
+        <file>fonts/NotoSans-ExtraBold.ttf</file>
+        <file>fonts/NotoSans-ExtraBoldItalic.ttf</file>
+        <file>fonts/NotoSans-ExtraLight.ttf</file>
+        <file>fonts/NotoSans-ExtraLightItalic.ttf</file>
+        <file>fonts/NotoSans-Italic.ttf</file>
+        <file>fonts/NotoSans-Light.ttf</file>
+        <file>fonts/NotoSans-LightItalic.ttf</file>
+        <file>fonts/NotoSans-Medium.ttf</file>
+        <file>fonts/NotoSans-MediumItalic.ttf</file>
+        <file>fonts/NotoSans-Regular.ttf</file>
+        <file>fonts/NotoSans-SemiBold.ttf</file>
+        <file>fonts/NotoSans-SemiBoldItalic.ttf</file>
+        <file>fonts/NotoSans-Thin.ttf</file>
+        <file>fonts/NotoSans-ThinItalic.ttf</file>
+        <file>fonts/FzMadinahAuthentic.ttf</file>
+    </qresource>
+</RCC>

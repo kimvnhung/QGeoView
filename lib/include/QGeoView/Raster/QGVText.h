@@ -26,7 +26,7 @@ class QGV_LIB_DECL QGVText : public QGVDrawItem
 public:
     QGVText();
 
-    void setGeometry(const QGV::GeoPos& geoPos, const QSizeF& textSize = QSizeF(8,8));
+    void setGeometry(const QGV::GeoPos& geoPos, const QSizeF& textSize = QSizeF(100,100));
 
     void setText(const QString& text);
     QString getText() const;

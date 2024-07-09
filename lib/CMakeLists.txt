@@ -1,5 +1,6 @@
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 
 # Set the QT version
 option(USE_QT_5 "Force Qt 5 usage" OFF)
@@ -80,6 +81,7 @@ add_library(qgeoview SHARED
     src/Raster/QGVPoint.cpp
     src/Raster/QGVLine.cpp
     src/Raster/QGVText.cpp
+    font.qrc
 )
 
 target_include_directories(qgeoview

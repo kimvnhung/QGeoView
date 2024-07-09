@@ -19,6 +19,7 @@
 #include "Raster/QGVText.h"
 #include "QGVMap.h"
 
+#include <QFontDatabase>
 #include <QPainter>
 
 QGVText::QGVText()
@@ -72,6 +73,13 @@ void QGVText::projPaint(QPainter* painter)
     }
 
     painter->setPen(QPen(Qt::black));
+    // const QStringList fontFamilies = QFontDatabase::families();
+    // for (const QString& family : fontFamilies) {
+    //     qDebug() << family;
+    // }
+
+    // Set font Noto Sans
+    painter->setFont(QFont("Noto Sans Medium",12));
     painter->drawText(mProjRect, mText);
 }
 
@@ -81,6 +89,15 @@ void QGVText::calculateGeometry()
         return;
     }
 
-    // mProjPos = getMap()->geoToProj(mGeoPos);
-    mProjRect = QRectF(mProjPos, mTextSize);
+    if (!mGeoPos.isEmpty()) {
+        mProjPos = getMap()->getProjection()->geoToProj(mGeoPos);
+    }
+
+    const QSizeF baseSize = !mTextSize.isEmpty() ? mTextSize : QSizeF(8, 8);
+    const QPointF baseAnchor = QPointF(baseSize.width() / 2, baseSize.height() / 2);
+
+    mProjRect = QRectF(mProjPos - baseAnchor, baseSize);
+
+    resetBoundary();
+    refresh();
 }

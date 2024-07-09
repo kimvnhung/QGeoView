@@ -89,9 +89,14 @@ void QGVLine::calculateGeometry()
         return;
     }
 
-    // mProjStart = getMap()->geoToProj(mStart);
-    // mProjEnd = getMap()->geoToProj(mEnd);
-    mProjRect = QRectF(mProjStart, mProjEnd).normalized();
+    if(!mStart.isEmpty() || !mEnd.isEmpty()) {
+        mProjStart = getMap()->getProjection()->geoToProj(mStart);
+        mProjEnd = getMap()->getProjection()->geoToProj(mEnd);
+    }
+    mProjRect = QRectF(mProjStart, mProjEnd);
+
+    resetBoundary();
+    refresh();
 }
 
 

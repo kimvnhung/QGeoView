@@ -27,12 +27,13 @@ QGVPoint::QGVPoint()
     setFlag(QGV::ItemFlag::IgnoreAzimuth);
 }
 
-void QGVPoint::setGeometry(const QGV::GeoPos& geoPos, const QSizeF& pointSize)
+void QGVPoint::setGeometry(const QGV::GeoPos& geoPos, const QSizeF& pointSize, const QBrush& color)
 {
     mGeoPos = geoPos;
     mProjPos = {};
     mPointSize = pointSize;
     mProjRect = {};
+    mColor = color;
     calculateGeometry();
 }
 
@@ -61,8 +62,7 @@ void QGVPoint::projPaint(QPainter* painter)
         return;
     }
 
-    painter->setBrush(QBrush(Qt::red));
-    // QRectF paintRect = mProjRect;
+    painter->setBrush(mColor);
 
     painter->setRenderHint(QPainter::SmoothPixmapTransform);
     painter->drawEllipse(mProjRect);
