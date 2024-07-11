@@ -25,6 +25,10 @@
 
 #include <QGeoView/QGVLayerOSM.h>
 
+#include <QGeoView/Raster/QGVLine.h>
+#include <QGeoView/Raster/QGVPoint.h>
+#include <QGeoView/Raster/QGVText.h>
+
 MainWindow::MainWindow()
 {
     setWindowTitle("QGeoView Samples - 10000 elements");
@@ -71,9 +75,24 @@ QGVLayer* MainWindow::create10000Layer() const
      * Items will be owned by layer.
      */
     const int size = 20000;
-    for (int i = 0; i < 10000; i++) {
-        auto item = new Rectangle(Helpers::randRect(mMap, target, size), Qt::red);
-        layer->addItem(item);
+    for (int i = 0; i < 100; i++) {
+        if(i%10==0){
+            auto item = new Rectangle(Helpers::randRect(mMap, target, size), Qt::red);
+            layer->addItem(item);
+        }else if(i%5==1){
+            auto item = new QGVText();
+            item->setGeometry(Helpers::randPos(target));
+            item->setText("hello: "+QString::number(i));
+            layer->addItem(item);
+        }else if(i%5==2){
+            auto item = new QGVPoint();
+            item->setGeometry(Helpers::randPos(target));
+            layer->addItem(item);
+        }else {
+            auto item = new QGVLine();
+            item->setGeometry(Helpers::randPos(target), Helpers::randPos(target));
+            layer->addItem(item);
+        }
     }
 
     return layer;

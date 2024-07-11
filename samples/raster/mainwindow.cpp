@@ -83,7 +83,7 @@ MainWindow::~MainWindow()
 
 QGV::GeoRect MainWindow::targetArea() const
 {
-    return QGV::GeoRect(QGV::GeoPos(50, 14), QGV::GeoPos(52, 15));
+    return QGV::GeoRect(QGV::GeoPos(15, 95), QGV::GeoPos(18, 125));
 }
 
 QGroupBox* MainWindow::createOptionsList()
@@ -121,6 +121,12 @@ QGroupBox* MainWindow::createOptionsList()
         QPushButton* button = new QPushButton("Add text");
         groupBox->layout()->addWidget(button);
         connect(button, &QPushButton::clicked, this, &MainWindow::addText);
+    }
+
+    {
+        QPushButton* button = new QPushButton("Add rectangle");
+        groupBox->layout()->addWidget(button);
+        connect(button, &QPushButton::clicked, this, &MainWindow::addRectangle);
     }
 
     {
@@ -220,7 +226,25 @@ void MainWindow::addLine()
     const QGV::GeoRect itemTargetArea = mMap->getProjection()->projToGeo(mMap->getCamera().projRect());
 
     auto* item = new QGVLine();
-    item->setGeometry(Helpers::randPos(itemTargetArea), Helpers::randPos(itemTargetArea));
+    // find last two points in the list
+    if (mLayer->countItems() > 1) {
+        QGVPoint* item1 = NULL;
+        QGVPoint* item2 = NULL;
+        for(int i = mLayer->countItems() - 1; i >= 0; i--) {
+            if (item1 == NULL && dynamic_cast<QGVPoint*>(mLayer->getItem(i)) != NULL) {
+                item1 = dynamic_cast<QGVPoint*>(mLayer->getItem(i));
+            } else if (item2 == NULL && dynamic_cast<QGVPoint*>(mLayer->getItem(i)) != NULL) {
+                item2 = dynamic_cast<QGVPoint*>(mLayer->getItem(i));
+            }
+            if (item1 != NULL && item2 != NULL) {
+                break;
+            }
+        }
+        item->setGeometry(item1->getGeoPos(), item2->getGeoPos());
+
+    } else {
+        item->setGeometry(Helpers::randPos(itemTargetArea), Helpers::randPos(itemTargetArea));
+    }
 
     mLayer->addItem(item);
 
@@ -234,6 +258,36 @@ void MainWindow::addText()
     auto* item = new QGVText();
     item->setGeometry(Helpers::randPos(itemTargetArea));
     item->setText("Chemnitz");
+
+    mLayer->addItem(item);
+
+    updateListOfItems();
+}
+
+void MainWindow::addRectangle()
+{
+    const QGV::GeoRect itemTargetArea = mMap->getProjection()->projToGeo(mMap->getCamera().projRect());
+
+    auto* item = new Rectangle({},{});
+    // find last two points in the list
+    if (mLayer->countItems() > 1) {
+        QGVPoint* item1 = NULL;
+        QGVPoint* item2 = NULL;
+        for(int i = mLayer->countItems() - 1; i >= 0; i--) {
+            if (item1 == NULL && dynamic_cast<QGVPoint*>(mLayer->getItem(i)) != NULL) {
+                item1 = dynamic_cast<QGVPoint*>(mLayer->getItem(i));
+            } else if (item2 == NULL && dynamic_cast<QGVPoint*>(mLayer->getItem(i)) != NULL) {
+                item2 = dynamic_cast<QGVPoint*>(mLayer->getItem(i));
+            }
+            if (item1 != NULL && item2 != NULL) {
+                break;
+            }
+        }
+        item->setRect({item1->getGeoPos(), item2->getGeoPos()});
+
+    } else {
+        item->setRect({Helpers::randPos(itemTargetArea), Helpers::randPos(itemTargetArea)});
+    }
 
     mLayer->addItem(item);
 

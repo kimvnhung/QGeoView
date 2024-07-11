@@ -303,6 +303,7 @@ QPoint QGVMap::mapFromProj(QPointF projPos)
 
 void QGVMap::refreshMap()
 {
+    qDebug()<<__FUNCTION__;
     mRootItem->update();
 }
 

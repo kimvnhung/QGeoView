@@ -29,6 +29,7 @@ public:
     void setGeometry(const QGV::GeoPos& geoPos, const QSizeF& pointSize = QSizeF(8,8), const QBrush& color = Qt::transparent);
 
     QPointF getPoint() const;
+    QGV::GeoPos getGeoPos() const;
 
 protected:
     void onProjection(QGVMap* geoMap) override;

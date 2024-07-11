@@ -46,6 +46,7 @@ public:
     void addPoint();
     void addText();
     void addLine();
+    void addRectangle();
     void removeLast();
     void updateListOfItems();
 

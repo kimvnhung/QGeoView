@@ -105,7 +105,7 @@ QString Rectangle::projTooltip(const QPointF& projPos) const
 
     auto geo = getMap()->getProjection()->projToGeo(projPos);
 
-    return "Rectangle with color " + mColor.name() + "\nPosition " + geo.latToString() + " " + geo.lonToString();
+    return "Line with color " + mColor.name() + "\nPosition " + geo.latToString() + " " + geo.lonToString();
 }
 
 void Rectangle::projOnMouseClick(const QPointF& projPos)
