@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 
+#include <QGeoView/QGVLayer.h>
+#include <QGeoView/QGVMap.h>
+
 namespace Ui {
 class MainWindow;
 }
@@ -20,10 +23,19 @@ private slots:
     void onChangeDirectionBtnClicked();
     void onSwitchHighlightBtnClicked();
 
+
+    void onProjectChanged();
+    void onAreaChanged();
 private:
     Ui::MainWindow* ui;
     QTimer *mTimer = NULL;
     QGVMap* mMap = NULL;
+
+    QGVLayer* mOsmLayer = NULL;
+    QGVLayer* mInfoLayer = NULL;
+
+    void initInfomationWidget();
+
 };;
 
 #endif // MAINWINDOW_H
