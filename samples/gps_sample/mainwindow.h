@@ -5,6 +5,7 @@
 
 #include <QGeoView/QGVLayer.h>
 #include <QGeoView/QGVMap.h>
+#include <QGeoView/QGVWidgetText.h>
 
 namespace Ui {
 class MainWindow;
@@ -19,13 +20,15 @@ public:
     ~MainWindow();
 
 private slots:
-    void onStartBtnClicked();
-    void onChangeDirectionBtnClicked();
-    void onSwitchHighlightBtnClicked();
-
+    void on_startBtn_clicked();
+    void on_changeDirectionBtn_clicked();
+    void on_switchHightLightBtn_clicked();
 
     void onProjectChanged();
     void onAreaChanged();
+
+
+
 private:
     Ui::MainWindow* ui;
     QTimer *mTimer = NULL;
@@ -33,6 +36,11 @@ private:
 
     QGVLayer* mOsmLayer = NULL;
     QGVLayer* mInfoLayer = NULL;
+
+    QGVWidgetText *mTopLeftLb = NULL;
+    QGVWidgetText *mTopRightLb = NULL;
+    QGVWidgetText *mBottomLeftLb = NULL;
+    QGVWidgetText *mBottomRightLb = NULL;
 
     void initInfomationWidget();
 

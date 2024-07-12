@@ -1,4 +1,6 @@
 #include "mainwindow.h"
+#include "routeline.h"
+#include "target.h"
 #include "ui_mainwindow.h"
 
 #include <QTimer>
@@ -6,6 +8,8 @@
 
 #include <QGeoView/QGVLayerOSM.h>
 #include <QGeoView/QGVWidgetText.h>
+
+#define INFO_TEMPLATE "(%1,%2) - (%3,%4)"
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
@@ -19,7 +23,7 @@ MainWindow::MainWindow(QWidget* parent)
     Helpers::setupCachedNetworkAccessManager(this);
 
     // Background layer
-    mOsmLayer = new QGVLayerOSM(/*"http://192.168.239.69:1158/tile/${z}/${x}/${y}.png"*/);
+    mOsmLayer = new QGVLayerOSM("http://localhost:8080/tile/${z}/${x}/${y}.png");
 
     mMap->addItem(mOsmLayer);
     initInfomationWidget();
@@ -27,6 +31,7 @@ MainWindow::MainWindow(QWidget* parent)
     mInfoLayer = new QGVLayer();
     mInfoLayer->setName("Infomations");
     mInfoLayer->setDescription("Demo for infomations");
+    mMap->addItem(mInfoLayer);
 
 
 
@@ -39,25 +44,20 @@ MainWindow::MainWindow(QWidget* parent)
 void MainWindow::initInfomationWidget()
 {
     if(mMap){
-        auto topLeftLb = new QGVWidgetText();
-        auto topRightLb = new QGVWidgetText();
-        auto bottomLeftLb = new QGVWidgetText();
-        auto bottomRightLb = new QGVWidgetText();
+        mTopLeftLb = new QGVWidgetText();
+        mTopRightLb = new QGVWidgetText();
+        mBottomLeftLb = new QGVWidgetText();
+        mBottomRightLb = new QGVWidgetText();
 
-        topLeftLb->setAnchor(QPoint(0,0),{Qt::LeftEdge,Qt::TopEdge});
-        topRightLb->setAnchor(QPoint(0,0),{Qt::TopEdge,Qt::RightEdge});
-        bottomLeftLb->setAnchor(QPoint(0,0),{Qt::BottomEdge,Qt::LeftEdge});
-        bottomRightLb->setAnchor(QPoint(0,0),{Qt::BottomEdge,Qt::RightEdge});
+        mTopLeftLb->setAnchor(QPoint(0,0),{Qt::LeftEdge,Qt::TopEdge});
+        mTopRightLb->setAnchor(QPoint(0,0),{Qt::TopEdge,Qt::RightEdge});
+        mBottomLeftLb->setAnchor(QPoint(0,0),{Qt::BottomEdge,Qt::LeftEdge});
+        mBottomRightLb->setAnchor(QPoint(0,0),{Qt::BottomEdge,Qt::RightEdge});
 
-        topLeftLb->setText("Hellop");
-        topRightLb->setText("Hellop");
-        bottomLeftLb->setText("Hellop");
-        bottomRightLb->setText("Hellop");
-
-        mMap->addWidget(topLeftLb);
-        mMap->addWidget(topRightLb);
-        mMap->addWidget(bottomLeftLb);
-        mMap->addWidget(bottomRightLb);
+        mMap->addWidget(mTopLeftLb);
+        mMap->addWidget(mTopRightLb);
+        mMap->addWidget(mBottomLeftLb);
+        mMap->addWidget(mBottomRightLb);
     }
 }
 
@@ -66,17 +66,27 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::onStartBtnClicked()
+void MainWindow::on_startBtn_clicked()
 {
     // Start GPS
+    QGV::GeoRect curArea = mMap->getProjection()->projToGeo(mMap->getCamera().projRect());
+    // Random pos in curArea
+    QGV::GeoPos pos = Helpers::randPos(curArea);
+    auto item = new Target(pos);
+    mInfoLayer->addItem(item);
+    QGV::GeoPos pos2 = Helpers::randPos(curArea);
+    auto item2 = new RouteLine(pos,pos2,false,RouteLine::Type::CURRENT);
+    mInfoLayer->addItem(item2);
+    qDebug()<<"random start : "<<pos;
+    qDebug()<<"random end : "<<pos2;
 }
 
-void MainWindow::onChangeDirectionBtnClicked()
+void MainWindow::on_changeDirectionBtn_clicked()
 {
     // Change direction
 }
 
-void MainWindow::onSwitchHighlightBtnClicked()
+void MainWindow::on_switchHightLightBtn_clicked()
 {
     // Switch highlight
 }
@@ -88,9 +98,32 @@ void MainWindow::onProjectChanged()
 
 void MainWindow::onAreaChanged()
 {
-    qDebug() << "Area changed";
     QRectF visibleRect = mMap->getCamera().projRect();
     QGV::GeoRect visibleGeoRect = mMap->getProjection()->projToGeo(visibleRect);
 
-
+    mTopLeftLb->setText(QString(INFO_TEMPLATE)
+                                .arg(QString::number(visibleGeoRect.topLeft().latitude(),'f',2))
+                                .arg(QString::number(visibleGeoRect.topLeft().longitude(),'f',2))
+                                .arg(QString::number(visibleRect.topLeft().x(),'f',2))
+                                .arg(QString::number(visibleRect.topLeft().y(),'f',2))
+                        );
+    mTopRightLb->setText(QString(INFO_TEMPLATE)
+                                .arg(QString::number(visibleGeoRect.topRight().latitude(),'f',2))
+                                .arg(QString::number(visibleGeoRect.topRight().longitude(),'f',2))
+                                .arg(QString::number(visibleRect.topRight().x(),'f',2))
+                                .arg(QString::number(visibleRect.topRight().y(),'f',2))
+                        );
+    mBottomLeftLb->setText(QString(INFO_TEMPLATE)
+                                .arg(QString::number(visibleGeoRect.bottomLeft().latitude(),'f',2))
+                                .arg(QString::number(visibleGeoRect.bottomLeft().longitude(),'f',2))
+                                .arg(QString::number(visibleRect.bottomLeft().x(),'f',2))
+                                .arg(QString::number(visibleRect.bottomLeft().y(),'f',2))
+                        );
+    mBottomRightLb->setText(QString(INFO_TEMPLATE)
+                                .arg(QString::number(visibleGeoRect.bottomRight().latitude(),'f',2))
+                                .arg(QString::number(visibleGeoRect.bottomRight().longitude(),'f',2))
+                                .arg(QString::number(visibleRect.bottomRight().x(),'f',2))
+                                .arg(QString::number(visibleRect.bottomRight().y(),'f',2))
+                        );
 }
+
