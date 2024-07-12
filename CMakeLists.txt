@@ -1,8 +1,15 @@
-cmake_minimum_required(VERSION 3.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.18 FATAL_ERROR)
 
 project(QGeoView LANGUAGES C CXX)
 
-option(BUILD_EXAMPLES "Build examples" ON)
+option(BUILD_EXAMPLES "Build examples" OFF)
+
+# Check if QT_VERSION_MAJOR is defined
+if (NOT DEFINED QT_VERSION_MAJOR)
+    message(FATAL_ERROR "Please specify Qt version")
+else()
+    set(QT_VERSION "${QT_VERSION_MAJOR}")
+endif ()
 
 find_package(GDAL CONFIG)
 
