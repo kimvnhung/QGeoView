@@ -56,6 +56,7 @@ void Target::projPaint(QPainter* painter)
     // Draw outer circle
     painter->setBrush(mColor);
     painter->drawEllipse(mProjPos,mPointSize.width()*0.3,mPointSize.height()*0.3);
+    qDebug() << "Drawing target: " << mPointSize;
 }
 
 void Target::calculateGeometry()

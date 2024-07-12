@@ -41,6 +41,9 @@ private:
 
     QPointF mProjStartPos;
     QPointF mProjEndPos;
+
+    QPointF mArrowAnchor;
+    double mRotateAngle;
     bool mShowDirection;
     QRectF mProjRect;
     Type mType;

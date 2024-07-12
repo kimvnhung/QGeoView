@@ -39,6 +39,11 @@ MainWindow::MainWindow(QWidget* parent)
     QTimer::singleShot(100, this, [this]() {
         mMap->cameraTo(QGVCameraActions(mMap).scaleTo(QGV::GeoRect(13, 90, 19, 120)));
     });
+
+    mTimer = new QTimer(this);
+    mTimer->setInterval(3000);
+    connect(mTimer, &QTimer::timeout, this, &MainWindow::onUpdatePos);
+    mTimer->setSingleShot(true);
 }
 
 void MainWindow::initInfomationWidget()
@@ -68,17 +73,15 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_startBtn_clicked()
 {
-    // Start GPS
-    QGV::GeoRect curArea = mMap->getProjection()->projToGeo(mMap->getCamera().projRect());
-    // Random pos in curArea
-    QGV::GeoPos pos = Helpers::randPos(curArea);
-    auto item = new Target(pos);
-    mInfoLayer->addItem(item);
-    QGV::GeoPos pos2 = Helpers::randPos(curArea);
-    auto item2 = new RouteLine(pos,pos2,false,RouteLine::Type::CURRENT);
-    mInfoLayer->addItem(item2);
-    qDebug()<<"random start : "<<pos;
-    qDebug()<<"random end : "<<pos2;
+    if(mTimer){
+        if(mTimer->isActive()){
+            mTimer->stop();
+            ui->startBtn->setText("Start");
+        }else {
+            mTimer->start();
+            ui->startBtn->setText("Stop");
+        }
+    }
 }
 
 void MainWindow::on_changeDirectionBtn_clicked()
@@ -94,6 +97,23 @@ void MainWindow::on_switchHightLightBtn_clicked()
 void MainWindow::onProjectChanged()
 {
     qDebug() << "Projection changed";
+}
+
+void MainWindow::onUpdatePos()
+{
+
+    // Update position
+    // Start GPS
+    QGV::GeoRect curArea = mMap->getProjection()->projToGeo(mMap->getCamera().projRect());
+    // Random pos in curArea
+    QGV::GeoPos pos = Helpers::randPos(curArea);
+    auto item = new Target(pos);
+    mInfoLayer->addItem(item);
+    QGV::GeoPos pos2 = Helpers::randPos(curArea);
+    auto item2 = new RouteLine(pos,pos2,true,RouteLine::Type::CURRENT);
+    mInfoLayer->addItem(item2);
+    qDebug()<<"random start : "<<pos;
+    qDebug()<<"random end : "<<pos2;
 }
 
 void MainWindow::onAreaChanged()

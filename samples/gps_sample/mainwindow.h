@@ -26,7 +26,7 @@ private slots:
 
     void onProjectChanged();
     void onAreaChanged();
-
+    void onUpdatePos();
 
 
 private:

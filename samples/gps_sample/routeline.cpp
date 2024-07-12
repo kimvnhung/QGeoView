@@ -7,6 +7,10 @@ RouteLine::RouteLine(const QGV::GeoPos& startPos, const QGV::GeoPos& endPos, boo
     :
     mStartPos(startPos),
     mEndPos(endPos),
+    mProjStartPos(),
+    mProjEndPos(),
+    mArrowAnchor(),
+    mRotateAngle(),
     mShowDirection(showDirection),
     mType(type)
 {
@@ -49,6 +53,14 @@ void RouteLine::onProjection(QGVMap* geoMap)
     mProjStartPos = geoMap->getProjection()->geoToProj(mStartPos);
     mProjEndPos = geoMap->getProjection()->geoToProj(mEndPos);
     mProjRect = geoMap->getProjection()->geoToProj(QGV::GeoRect(topLeft,bottomRight));
+
+    if(mShowDirection)
+    {
+        // Get random visible point on section from mProjStartPos to mProjEndPos
+        mArrowAnchor = QPointF((mProjStartPos.x() + mProjEndPos.x())/2,(mProjStartPos.y() + mProjEndPos.y())/2);
+        // Find angle between y-axis and line from mProjStartPos to mProjEndPos
+        mRotateAngle = atan((mProjStartPos.y() - mProjEndPos.y())/(mProjStartPos.x() - mProjEndPos.x()))*180/M_PI - 90;
+    }
 }
 
 QPainterPath RouteLine::projShape() const
@@ -74,6 +86,37 @@ void RouteLine::projPaint(QPainter* painter)
     pen.setCosmetic(true);
     painter->setPen(pen);
     painter->drawLine(QLineF(mProjStartPos,mProjEndPos));
+
+    if(mShowDirection)
+    {
+        pen.setWidth(1);
+        pen.setStyle(Qt::SolidLine);
+        painter->setPen(pen);
+        painter->setBrush(Qt::red);
+        QPainterPath path = QPainterPath();
+        path.moveTo(mArrowAnchor);
+        path.lineTo(QPointF(mArrowAnchor.x() + mProjRect.width()/10, mArrowAnchor.y() + mProjRect.height()/10));
+        path.lineTo(QPointF(mArrowAnchor.x() - mProjRect.width()/10, mArrowAnchor.y() + mProjRect.height()/10));
+        path.lineTo(mArrowAnchor);
+        path.closeSubpath();
+
+        QTransform t;
+        t.translate(mArrowAnchor.x(),mArrowAnchor.y());
+        t.rotate(mRotateAngle);
+        t.translate(-mArrowAnchor.x(),-mArrowAnchor.y());
+        QPainterPath rotatedPath = t.map(path);
+
+        // painter->drawPath(path);
+        painter->drawPath(rotatedPath);
+
+        qDebug()<<"****************************************";
+        qDebug()<<"TopLeft : "<<mProjRect.topLeft();
+        qDebug()<<"BottomRight : "<<mProjRect.bottomRight();
+        qDebug()<<"mArrowAnchor : "<<mArrowAnchor;
+        qDebug()<<"mRotateAngle : "<<mRotateAngle;
+        qDebug()<<"mProjRect.with: "<<QString::number(mProjRect.width(),'f',2);
+        // qDebug()<<"Map ratio: "<<getMap()->getProjection()->geodesicMeters()
+    }
 }
 
 QPointF RouteLine::projAnchor() const
