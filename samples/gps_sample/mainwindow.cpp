@@ -119,6 +119,8 @@ void MainWindow::onUpdatePos()
 void MainWindow::onAreaChanged()
 {
     QRectF visibleRect = mMap->getCamera().projRect();
+    qDebug()<<"visible rect : "<<visibleRect.width();
+    qDebug()<<"mMap.size: "<<mMap->size();
     QGV::GeoRect visibleGeoRect = mMap->getProjection()->projToGeo(visibleRect);
 
     mTopLeftLb->setText(QString(INFO_TEMPLATE)

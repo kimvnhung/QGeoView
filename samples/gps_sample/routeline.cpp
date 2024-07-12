@@ -3,6 +3,8 @@
 #include <QPainter>
 #include <QPen>
 
+#define ARROW_SIZE 10 // in pixels
+
 RouteLine::RouteLine(const QGV::GeoPos& startPos, const QGV::GeoPos& endPos, bool showDirection, Type type)
     :
     mStartPos(startPos),
@@ -93,10 +95,16 @@ void RouteLine::projPaint(QPainter* painter)
         pen.setStyle(Qt::SolidLine);
         painter->setPen(pen);
         painter->setBrush(Qt::red);
+        // Calculate arrow size in coordinates
+        QSizeF viewSize = getMap()->size();
+        QRectF viewCoordinateRect = getMap()->getCamera().projRect();
+        double arrowSizeInX = ARROW_SIZE * viewCoordinateRect.width() / viewSize.width();
+        double arrowSizeInY = ARROW_SIZE * viewCoordinateRect.height() / viewSize.height();
+
         QPainterPath path = QPainterPath();
         path.moveTo(mArrowAnchor);
-        path.lineTo(QPointF(mArrowAnchor.x() + mProjRect.width()/10, mArrowAnchor.y() + mProjRect.height()/10));
-        path.lineTo(QPointF(mArrowAnchor.x() - mProjRect.width()/10, mArrowAnchor.y() + mProjRect.height()/10));
+        path.lineTo(QPointF(mArrowAnchor.x() + arrowSizeInX, mArrowAnchor.y() + arrowSizeInY));
+        path.lineTo(QPointF(mArrowAnchor.x() - arrowSizeInX, mArrowAnchor.y() + arrowSizeInY));
         path.lineTo(mArrowAnchor);
         path.closeSubpath();
 
