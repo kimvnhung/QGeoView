@@ -14,10 +14,10 @@ endif ()
 find_package(GDAL CONFIG)
 
 add_subdirectory(lib)
+add_subdirectory(samples/shared)
 
 if (${BUILD_EXAMPLES})
   message(STATUS "Enabled building of examples")
-  add_subdirectory(samples/shared)
   add_subdirectory(samples/basic)
   add_subdirectory(samples/background)
   add_subdirectory(samples/widgets)
