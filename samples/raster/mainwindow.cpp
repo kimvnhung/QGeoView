@@ -232,7 +232,7 @@ void MainWindow::addLine()
 {
     const QGV::GeoRect itemTargetArea = mMap->getProjection()->projToGeo(mMap->getCamera().projRect());
 
-    auto* item = new QGVLine();
+    QGV::GeoPos start,end;
     // find last two points in the list
     if (mLayer->countItems() > 1) {
         QGVPoint* item1 = NULL;
@@ -247,11 +247,15 @@ void MainWindow::addLine()
                 break;
             }
         }
-        item->setGeometry(item1->getGeoPos(), item2->getGeoPos());
+        start = item1->getGeoPos();
+        end = item2->getGeoPos();
 
     } else {
-        item->setGeometry(Helpers::randPos(itemTargetArea), Helpers::randPos(itemTargetArea));
+        start = Helpers::randPos(itemTargetArea);
+        end = Helpers::randPos(itemTargetArea);
     }
+
+    auto item = new QGVLine(start, end);
 
     mLayer->addItem(item);
 

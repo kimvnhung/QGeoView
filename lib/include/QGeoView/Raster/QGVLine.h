@@ -24,19 +24,17 @@ class QGV_LIB_DECL QGVLine : public QGVDrawItem
 {
     Q_OBJECT
 public:
-    QGVLine(const QGV::GeoPos& start = {}, const QGV::GeoPos& end = {}, double lineSize = 4, bool enableDirection = false, QColor color = Qt::red);
+    QGVLine(const QGV::GeoPos& start = {}, const QGV::GeoPos& end = {}, double penSize = 4,Qt::PenStyle penStyle = Qt::SolidLine, QColor color = Qt::red);
 
     void setGeometry(const QGV::GeoPos& start, const QGV::GeoPos& end);
-    void setStart(const QGV::GeoPos& start);
-    void setEnd(const QGV::GeoPos& end);
     void setLineSize(double lineSize);
-    void setEnableDirection(bool enableDirection);
+    void setPenStyle(Qt::PenStyle penStyle);
     void setColor(QColor color);
 
     QGV::GeoPos getStart() const;
     QGV::GeoPos getEnd() const;
     double getLineSize() const;
-    bool getEnableDirection() const;
+    Qt::PenStyle getPenStyle() const;
     QColor getColor() const;
 
 protected:
@@ -52,8 +50,6 @@ protected:
     void projOnObjectMovePos(const QPointF& projPos) override;
     void projOnObjectStopMove(const QPointF& projPos) override;
 
-private:
-    void calculateGeometry();
 
 private:
     QGV::GeoPos mStart;
@@ -63,7 +59,7 @@ private:
     QPointF mProjEnd;
     QColor mColor;
     double mLineSize;
-    bool mEnableDirection;
+    Qt::PenStyle mPenStyle;
 
 };
 
