@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget* parent)
     Helpers::setupCachedNetworkAccessManager(this);
 
     // Background layer
-    mOsmLayer = new QGVLayerOSM("http://localhost:8080/tile/${z}/${x}/${y}.png");
+    mOsmLayer = new QGVLayerOSM(/*"http://localhost:8080/tile/${z}/${x}/${y}.png"*/);
 
     mMap->addItem(mOsmLayer);
     initInfomationWidget();

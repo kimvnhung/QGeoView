@@ -53,6 +53,8 @@ add_library(qgeoview SHARED
     include/QGeoView/Raster/QGVPoint.h
     include/QGeoView/Raster/QGVLine.h
     include/QGeoView/Raster/QGVText.h
+    include/QGeoView/Raster/QGVCircle.h
+    include/QGeoView/Raster/QGVRectangle.h
     src/QGVUtils.cpp
     src/QGVGlobal.cpp
     src/QGVProjection.cpp
@@ -82,6 +84,8 @@ add_library(qgeoview SHARED
     src/Raster/QGVLine.cpp
     src/Raster/QGVText.cpp
     font.qrc
+    src/Raster/QGVCircle.cpp
+    src/Raster/QGVRectangle.cpp
 )
 
 target_include_directories(qgeoview

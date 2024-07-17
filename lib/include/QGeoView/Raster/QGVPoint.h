@@ -26,7 +26,7 @@ class QGV_LIB_DECL QGVPoint : public QGVDrawItem
 public:
     QGVPoint();
 
-    void setGeometry(const QGV::GeoPos& geoPos, const QSizeF& pointSize = QSizeF(8,8), const QBrush& color = Qt::transparent);
+    void setGeometry(const QGV::GeoPos& geoPos, const QSizeF& pointSize = QSizeF(4,4), const QBrush& color = Qt::red);
 
     QPointF getPoint() const;
     QGV::GeoPos getGeoPos() const;

@@ -47,6 +47,7 @@ public:
     void addText();
     void addLine();
     void addRectangle();
+    void addCircle();
     void removeLast();
     void updateListOfItems();
 

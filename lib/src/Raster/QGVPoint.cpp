@@ -66,8 +66,8 @@ void QGVPoint::projPaint(QPainter* painter)
         return;
     }
 
-    painter->setBrush(mColor);
-
+    painter->setPen(QPen(Qt::transparent));
+    painter->setBrush(mColor);    
     painter->setRenderHint(QPainter::SmoothPixmapTransform);
     painter->drawEllipse(mProjRect);
 }

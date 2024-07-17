@@ -32,6 +32,7 @@
 #include <QGeoView/QGVWidgetCompass.h>
 #include <QGeoView/QGVWidgetScale.h>
 #include <QGeoView/QGVWidgetZoom.h>
+#include <QGeoView/Raster/QGVCircle.h>
 #include <QGeoView/Raster/QGVIcon.h>
 #include <QGeoView/Raster/QGVImage.h>
 #include <QGeoView/Raster/QGVLine.h>
@@ -127,6 +128,12 @@ QGroupBox* MainWindow::createOptionsList()
         QPushButton* button = new QPushButton("Add rectangle");
         groupBox->layout()->addWidget(button);
         connect(button, &QPushButton::clicked, this, &MainWindow::addRectangle);
+    }
+
+    {
+        QPushButton* button = new QPushButton("Add circle");
+        groupBox->layout()->addWidget(button);
+        connect(button, &QPushButton::clicked, this, &MainWindow::addCircle);
     }
 
     {
@@ -288,6 +295,18 @@ void MainWindow::addRectangle()
     } else {
         item->setRect({Helpers::randPos(itemTargetArea), Helpers::randPos(itemTargetArea)});
     }
+
+    mLayer->addItem(item);
+
+    updateListOfItems();
+}
+
+void MainWindow::addCircle()
+{
+    const QGV::GeoRect itemTargetArea = mMap->getProjection()->projToGeo(mMap->getCamera().projRect());
+
+    auto* item = new QGVCircle();
+    // item->setGeometry(Helpers::randPos(itemTargetArea), Helpers::randPos(itemTargetArea));
 
     mLayer->addItem(item);
 
