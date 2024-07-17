@@ -37,6 +37,7 @@
 #include <QGeoView/Raster/QGVImage.h>
 #include <QGeoView/Raster/QGVLine.h>
 #include <QGeoView/Raster/QGVPoint.h>
+#include <QGeoView/Raster/QGVRectangle.h>
 #include <QGeoView/Raster/QGVText.h>
 
 MainWindow::MainWindow()
@@ -279,7 +280,7 @@ void MainWindow::addRectangle()
 {
     const QGV::GeoRect itemTargetArea = mMap->getProjection()->projToGeo(mMap->getCamera().projRect());
 
-    auto* item = new Rectangle({},{});
+    QGV::GeoPos topLeft, bottomRight;
     // find last two points in the list
     if (mLayer->countItems() > 1) {
         QGVPoint* item1 = NULL;
@@ -294,11 +295,16 @@ void MainWindow::addRectangle()
                 break;
             }
         }
-        item->setRect({item1->getGeoPos(), item2->getGeoPos()});
+        topLeft = QGV::GeoPos(std::min(item1->getGeoPos().latitude(),item2->getGeoPos().latitude()),std::max(item1->getGeoPos().longitude(),item2->getGeoPos().longitude()));
+        bottomRight = QGV::GeoPos(std::max(item1->getGeoPos().latitude(),item2->getGeoPos().latitude()),std::min(item1->getGeoPos().longitude(),item2->getGeoPos().longitude()));
 
     } else {
-        item->setRect({Helpers::randPos(itemTargetArea), Helpers::randPos(itemTargetArea)});
+        auto randomPos1 = Helpers::randPos(itemTargetArea);
+        auto randomPos2 = Helpers::randPos(itemTargetArea);
+        topLeft = QGV::GeoPos(std::min(randomPos1.latitude(),randomPos2.latitude()),std::max(randomPos1.longitude(),randomPos2.longitude()));
+        bottomRight = QGV::GeoPos(std::max(randomPos1.latitude(),randomPos2.latitude()),std::min(randomPos1.longitude(),randomPos2.longitude()));
     }
+    auto item = new QGVRectangle(QGV::GeoRect(topLeft,bottomRight));
 
     mLayer->addItem(item);
 
