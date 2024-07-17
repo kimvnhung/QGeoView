@@ -36,6 +36,7 @@ private:
     QGV::GeoRect projToGeo(QRectF const& projRect) const override final;
 
     double geodesicMeters(QPointF const& projPos1, QPointF const& projPos2) const override final;
+    double geodesicDegrees(double distanceInMeters) const override final;
 
 private:
     double mEarthRadius;

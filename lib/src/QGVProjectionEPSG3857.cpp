@@ -80,6 +80,12 @@ double QGVProjectionEPSG3857::geodesicMeters(const QPointF& projPos1, const QPoi
 {
     const QGV::GeoPos geoPos1 = projToGeo(projPos1);
     const QGV::GeoPos geoPos2 = projToGeo(projPos2);
+
+    // Using haversine formula to calculate the distance between two points on the Earth
+    // We has distance between two points on the sphere : d = r*θ
+    // where r - Earth radius, θ - central angle between two points (in radians)
+    // Follow the Heversine formula from this link https://en.wikipedia.org/wiki/Haversine_formula
+    // d = 2 * r * arcsin(sqrt(1-cos(Δlat)+cos(lat1)*cos(lat2)*(1-cos(Δlon)))/2)
     const double latitudeArc = (geoPos1.latitude() - geoPos2.latitude()) * M_PI / 180.0;
     const double longitudeArc = (geoPos1.longitude() - geoPos2.longitude()) * M_PI / 180.0;
     const double latitudeH = qPow(sin(latitudeArc * 0.5), 2);
@@ -87,4 +93,12 @@ double QGVProjectionEPSG3857::geodesicMeters(const QPointF& projPos1, const QPoi
     const double lonFactor = cos(geoPos1.latitude() * M_PI / 180.0) * cos(geoPos2.latitude() * M_PI / 180.0);
     const double arcInRadians = 2.0 * asin(sqrt(latitudeH + lonFactor * lontitudeH));
     return mEarthRadius * arcInRadians;
+}
+
+double QGVProjectionEPSG3857::geodesicDegrees(double distanceInMeters) const
+{
+    // Normalize distanceInMeters to the range [0, 2 * M_PI * mEarthRadius]
+    distanceInMeters = fmod(distanceInMeters, 2.0 * M_PI * mEarthRadius);
+
+    return (distanceInMeters / mEarthRadius) * 180.0 / M_PI;
 }

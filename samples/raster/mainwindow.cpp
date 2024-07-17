@@ -315,7 +315,7 @@ void MainWindow::addCircle()
 {
     const QGV::GeoRect itemTargetArea = mMap->getProjection()->projToGeo(mMap->getCamera().projRect());
 
-    auto* item = new QGVCircle();
+    auto* item = new QGVCircle(Helpers::randPos(itemTargetArea),50000);
     // item->setGeometry(Helpers::randPos(itemTargetArea), Helpers::randPos(itemTargetArea));
 
     mLayer->addItem(item);

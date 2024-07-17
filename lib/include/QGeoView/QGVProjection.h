@@ -38,6 +38,7 @@ public:
     virtual QRectF geoToProj(QGV::GeoRect const& geoRect) const = 0;
     virtual QGV::GeoRect projToGeo(QRectF const& projRect) const = 0;
     virtual double geodesicMeters(QPointF const& projPos1, QPointF const& projPos2) const = 0;
+    virtual double geodesicDegrees(double distanceInMeters) const = 0;
 
 private:
     Q_DISABLE_COPY(QGVProjection)
