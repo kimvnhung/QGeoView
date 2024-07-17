@@ -24,7 +24,7 @@ class QGV_LIB_DECL QGVLine : public QGVDrawItem
 {
     Q_OBJECT
 public:
-    QGVLine(const QGV::GeoPos& start = {}, const QGV::GeoPos& end = {}, double penSize = 4,Qt::PenStyle penStyle = Qt::SolidLine, QColor color = Qt::red);
+    QGVLine(const QGV::GeoPos& start, const QGV::GeoPos& end, double penSize = 4,Qt::PenStyle penStyle = Qt::SolidLine, QColor color = Qt::red);
 
     void setGeometry(const QGV::GeoPos& start, const QGV::GeoPos& end);
     void setLineSize(double lineSize);
