@@ -67,9 +67,19 @@ QSizeF Helpers::randSize(int baseSize)
 
 void Helpers::setupCachedNetworkAccessManager(QObject* parent)
 {
-    QDir("cacheDir").removeRecursively();
+    // Get temporary directory for cache
+    auto tempDir = QDir::temp();
+    // Check if the directory exists
+    // with path %tempDir%/QGeoView/cacheDir
+    if (!tempDir.exists("QGeoView")) {
+        // Create the directory
+        tempDir.mkdir("QGeoView");
+    }
+
+    // Remove the cache directory
+    tempDir.rmdir("QGeoView/cacheDir");
     auto cache = new QNetworkDiskCache(parent);
-    cache->setCacheDirectory("cacheDir");
+    cache->setCacheDirectory(tempDir.filePath("QGeoView/cacheDir"));
     auto manager = new QNetworkAccessManager(parent);
     manager->setCache(cache);
     QGV::setNetworkManager(manager);

@@ -24,7 +24,7 @@ find_package(Qt${QT_VERSION} REQUIRED COMPONENTS
      Network
 )
 
-add_library(qgeoview SHARED
+add_library(qgeoview
     include/QGeoView/QGVGlobal.h
     include/QGeoView/QGVUtils.h
     include/QGeoView/QGVProjection.h
