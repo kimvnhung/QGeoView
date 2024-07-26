@@ -106,6 +106,8 @@ Q_SIGNALS:
     void mapMousePress(QPointF projPos);
     void mapMouseDoubleClicked(QPointF projPos);
     void dropOnMap(QGV::GeoPos pos, const QMimeData* data);
+    void dragEnterOnMap(QGV::GeoPos pos, const QMimeData* data);
+    void dragMoveOnMap(QGV::GeoPos pos, const QMimeData* data);
 
 private:
     QScopedPointer<QGVProjection> mProjection;
@@ -114,4 +116,6 @@ private:
     QList<QGVWidget*> mWidgets;
     QSet<QGVItem*> mSelections;
     void handleDropDataOnQGVMapQGView(QPointF position, const QMimeData* dropData);
+    void handleDragEnterDataOnQGVMapQGView(QPointF position, const QMimeData* dragEnterData);
+    void handleDragMoveDataOnQGVMapQGView(QPointF position, const QMimeData* dragMoveData);
 };

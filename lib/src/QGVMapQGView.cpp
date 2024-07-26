@@ -603,11 +603,23 @@ void QGVMapQGView::keyPressEvent(QKeyEvent* event)
 
 void QGVMapQGView::dragEnterEvent(QDragEnterEvent* event)
 {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    Q_EMIT dragEnterData(event->position(), event->mimeData());
+#else
+    QPointF dropPoint = event->posF();
+    Q_EMIT dragEnterData(dropPoint, event->mimeData());
+#endif
     event->accept();
 }
 
 void QGVMapQGView::dragMoveEvent(QDragMoveEvent* event)
 {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    Q_EMIT dragMoveData(event->position(), event->mimeData());
+#else
+    QPointF dropPoint = event->posF();
+    Q_EMIT dragMoveData(dropPoint, event->mimeData());
+#endif
     event->accept();
 }
 

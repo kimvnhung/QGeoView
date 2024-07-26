@@ -404,6 +404,20 @@ void QGVMap::handleDropDataOnQGVMapQGView(QPointF position, const QMimeData* dro
     Q_EMIT dropOnMap(geoPos, dropData);
 }
 
+void QGVMap::handleDragEnterDataOnQGVMapQGView(QPointF position, const QMimeData* dragData)
+{
+    const auto mapToProjectionPos = mapToProj(QPoint(position.rx(), position.ry()));
+    auto geoPos = getProjection()->projToGeo(mapToProjectionPos);
+    Q_EMIT dragEnterOnMap(geoPos, dragData);
+}
+
+void QGVMap::handleDragMoveDataOnQGVMapQGView(QPointF position, const QMimeData* dragData)
+{
+    const auto mapToProjectionPos = mapToProj(QPoint(position.rx(), position.ry()));
+    auto geoPos = getProjection()->projToGeo(mapToProjectionPos);
+    Q_EMIT dragMoveOnMap(geoPos, dragData);
+}
+
 void QGVMap::mouseDoubleClickEvent(QMouseEvent* event)
 {
     if (hasMouseTracking()) {

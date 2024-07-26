@@ -52,6 +52,8 @@ public:
 
 Q_SIGNALS:
     void dropData(QPointF position, const QMimeData* dropData);
+    void dragEnterData(QPointF position, const QMimeData* dropData);
+    void dragMoveData(QPointF position, const QMimeData* dropData);
 
 private:
     QRectF viewRect() const;
