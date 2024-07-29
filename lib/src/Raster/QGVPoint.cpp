@@ -74,7 +74,6 @@ void QGVPoint::projPaint(QPainter* painter)
 
 void QGVPoint::calculateGeometry()
 {
-    qDebug()<<__FUNCTION__;
     if (getMap() == nullptr) {
         return;
     }
@@ -83,12 +82,10 @@ void QGVPoint::calculateGeometry()
         mProjPos = getMap()->getProjection()->geoToProj(mGeoPos);
     }
 
-    qDebug()<<mProjPos;
     const QSizeF baseSize = !mPointSize.isEmpty() ? mPointSize : QSizeF(1, 1);
     const QPointF baseAnchor = QPointF(baseSize.width() / 2, baseSize.height() / 2);
 
     mProjRect = QRectF(mProjPos - baseAnchor, baseSize);
-    qDebug()<<mProjRect;
     resetBoundary();
     refresh();
 }
